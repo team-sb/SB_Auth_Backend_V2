@@ -1,4 +1,4 @@
-package team.sb.authorizationserver.domain.user.api.dto;
+package team.sb.authorizationserver.domain.user.api.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

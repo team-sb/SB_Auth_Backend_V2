@@ -3,7 +3,7 @@ package team.sb.authorizationserver.domain.user.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.sb.authorizationserver.domain.user.api.dto.SignupRequest;
+import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;

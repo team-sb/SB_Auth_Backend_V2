@@ -3,7 +3,7 @@ package team.sb.authorizationserver.domain.user.facade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import team.sb.authorizationserver.domain.user.api.dto.SignupRequest;
+import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.entity.User;
 import team.sb.authorizationserver.domain.user.exception.UserAlreadyExistsException;
 import team.sb.authorizationserver.domain.user.repository.UserRepository;
