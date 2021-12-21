@@ -2,9 +2,8 @@ package team.sb.authorizationserver.global.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceAsync;
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceAsyncClient;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,12 +20,13 @@ public class SesConfig {
     private final AwsProperties awsProperties;
 
     @Bean
-    public AmazonSimpleEmailServiceAsync amazonSimpleEmailService() {
-        BasicAWSCredentials credentials = new BasicAWSCredentials(awsProperties.getAccessKey(), awsProperties.getSecretKey());
+    public AmazonSimpleEmailService amazonSimpleEmailService() {
+        final BasicAWSCredentials awsCredentials = new BasicAWSCredentials(awsProperties.getAccessKey(), awsProperties.getSecretKey());
+        final AWSStaticCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(awsCredentials);
 
-        return AmazonSimpleEmailServiceAsyncClient.asyncBuilder()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(Regions.fromName(region))
+        return AmazonSimpleEmailServiceClientBuilder.standard()
+                .withCredentials(credentialsProvider)
+                .withRegion(region)
                 .build();
     }
 
