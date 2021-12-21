@@ -3,6 +3,7 @@ package team.sb.authorizationserver.domain.user.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -35,5 +36,14 @@ public class User {
 
     @Column(nullable = false)
     private LocalDate birthDay;
+
+    public User(SignupRequest signUpRequest) {
+        this.email = signUpRequest.getEmail();
+        this.password = signUpRequest.getPassword();
+        this.name = signUpRequest.getName();
+        this.phoneNumber = signUpRequest.getPhoneNumber();
+        this.gender = signUpRequest.getGender();
+        this.birthDay = signUpRequest.getBirthDay();
+    }
 
 }
