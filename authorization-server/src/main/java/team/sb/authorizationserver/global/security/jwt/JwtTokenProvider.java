@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import team.sb.authorizationserver.domain.refreshtoken.entity.RefreshToken;
 import team.sb.authorizationserver.domain.refreshtoken.repository.RefreshTokenRepository;
+import team.sb.authorizationserver.global.exception.ExpiredTokenException;
+import team.sb.authorizationserver.global.exception.InvalidTokenException;
 import team.sb.authorizationserver.global.properties.JwtProperties;
 import team.sb.authorizationserver.global.security.auth.AuthDetailsService;
 import team.sb.authorizationserver.global.security.jwt.dto.TokenResponse;
@@ -77,7 +79,7 @@ public class JwtTokenProvider {
         Claims body = getBody(token);
 
         if(body.getExpiration().before(new Date())) {
-            throw new RuntimeException("token is expired");
+            throw ExpiredTokenException.EXCEPTION;
         }
 
         UserDetails userDetails = getDetails(body);
@@ -95,9 +97,9 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            throw new RuntimeException("token is expired");
+            throw ExpiredTokenException.EXCEPTION;
         } catch (MalformedJwtException | SignatureException e) {
-            throw new RuntimeException("token is not correct");
+            throw InvalidTokenException.EXCEPTION;
         }
     }
 
