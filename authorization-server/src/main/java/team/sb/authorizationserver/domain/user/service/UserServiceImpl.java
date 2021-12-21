@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
-import team.sb.authorizationserver.domain.user.facade.UserEmailFacade;
+import team.sb.authorizationserver.domain.authcode.facade.AuthCodeFacade;
 import team.sb.authorizationserver.domain.user.facade.UserFacade;
 
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ import team.sb.authorizationserver.domain.user.facade.UserFacade;
 public class UserServiceImpl implements UserService {
 
     private final UserFacade userFacade;
-    private final UserEmailFacade userEmailFacade;
+    private final AuthCodeFacade authCodeFacade;
 
     @Transactional
     @Override
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void sendEmail(EmailRequest emailRequest) {
-        userEmailFacade.sendEmail(emailRequest.getEmail());
+        authCodeFacade.sendEmail(emailRequest.getEmail());
     }
 
 }
