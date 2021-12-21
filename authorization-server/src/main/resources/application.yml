@@ -1,7 +1,7 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: mysql
     generate-ddl: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
@@ -25,3 +25,11 @@ jwt:
   secretKey: ${JWT_SECRET_KEY}
   accessExp: ${JWT_ACCESS_EXP}
   refreshExp: ${JWT_REFRESH_EXP}
+
+aws:
+  ses:
+    email: ${AWS_SES_BASE_EMAIL}
+  region: ${AWS_REGION}
+  credentials:
+    accessKey: ${AWS_ACCESS}
+    secretKey: ${AWS_SECRET}
