@@ -49,4 +49,8 @@ public class User {
         this.birthDay = signUpRequest.getBirthDay();
     }
 
+    public void updateProfileImage(ProfileImage profileImage) {
+        this.profileImage = profileImage;
+    }
+
 }
