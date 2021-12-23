@@ -3,6 +3,7 @@ package team.sb.authorizationserver.domain.user.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import team.sb.authorizationserver.domain.oauth.api.dto.ClientDto;
 import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
@@ -30,13 +31,16 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public String login(@RequestBody @Valid LoginRequest loginRequest) {
-        return userService.login(loginRequest);
+    public String login(@RequestParam String clientId,
+                        @RequestParam String redirectUri,
+                        @RequestBody @Valid LoginRequest loginRequest) {
+        return userService.login(loginRequest, clientId, redirectUri);
     }
 
-    @GetMapping("/callback")
-    public TokenResponse callbackSocial(@RequestParam String code) {
-        return userService.callbackSocial(code);
+    @GetMapping("/token")
+    public TokenResponse getToken(@RequestParam String code,
+                                  @RequestBody ClientDto clientDto) {
+        return userService.getToken(code, clientDto);
     }
 
 }
