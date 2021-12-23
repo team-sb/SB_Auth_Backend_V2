@@ -49,7 +49,7 @@ public class OauthServiceImpl implements OauthService {
             throw InvalidOauthCodeException.EXCEPTION;
         }
 
-        return jwtTokenProvider.generateToken(code);
+        return jwtTokenProvider.generateToken(clientId);
     }
 
 }
