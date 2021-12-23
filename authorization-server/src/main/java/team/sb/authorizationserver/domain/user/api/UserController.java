@@ -3,7 +3,6 @@ package team.sb.authorizationserver.domain.user.api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import team.sb.authorizationserver.domain.oauth.api.dto.ClientDto;
 import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
@@ -37,10 +36,9 @@ public class UserController {
         return userService.login(loginRequest, clientId, redirectUri);
     }
 
-    @GetMapping("/token")
-    public TokenResponse getToken(@RequestParam String code,
-                                  @RequestBody ClientDto clientDto) {
-        return userService.getToken(code, clientDto);
+    @PutMapping("/auth")
+    public TokenResponse reissue(@RequestParam("X-Refresh-Token") String refreshToken) {
+        return userService.reissue(refreshToken);
     }
 
 }

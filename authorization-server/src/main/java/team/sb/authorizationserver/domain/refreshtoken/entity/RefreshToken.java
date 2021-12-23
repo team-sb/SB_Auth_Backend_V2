@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.TimeToLive;
 public class RefreshToken {
 
     @Id
-    private String email;
+    private String clientId;
 
     private String refreshToken;
 

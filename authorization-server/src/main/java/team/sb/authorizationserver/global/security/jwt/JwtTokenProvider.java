@@ -26,13 +26,13 @@ public class JwtTokenProvider {
     private final AuthDetailsService authDetailsService;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public TokenResponse generateToken(String code) {
-        String access = generateAccessToken(code);
-        String refresh = generateRefreshToken(code);
+    public TokenResponse generateToken(String clientId) {
+        String access = generateAccessToken(clientId);
+        String refresh = generateRefreshToken(clientId);
 
         refreshTokenRepository.save(
                 RefreshToken.builder()
-                        .email(code)
+                        .clientId(clientId)
                         .refreshToken(refresh)
                         .ttl(jwtProperties.getRefreshExp())
                         .build()
@@ -41,9 +41,9 @@ public class JwtTokenProvider {
         return new TokenResponse(access, refresh);
     }
 
-    public String generateAccessToken(String code) {
+    public String generateAccessToken(String clientId) {
         return Jwts.builder()
-                .setSubject(code)
+                .setSubject(clientId)
                 .claim("type", "access")
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .setExpiration(
@@ -53,9 +53,9 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String generateRefreshToken(String code) {
+    public String generateRefreshToken(String clientId) {
         return Jwts.builder()
-                .setSubject(code)
+                .setSubject(clientId)
                 .claim("type", "refresh")
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .setExpiration(
