@@ -20,11 +20,11 @@ public class UserFacade {
     private final PasswordEncoder passwordEncoder;
     private final AuthCodeRepository authCodeRepository;
 
-    public void registerUser(SignupRequest signUpRequest) {
+    public User registerUser(SignupRequest signUpRequest) {
         isAlreadyExists(signUpRequest.getEmail(), signUpRequest.getPhoneNumber());
         isValidCode(signUpRequest.getEmail(), signUpRequest.getCode());
 
-        userRepository.save(
+        return userRepository.save(
                 new User(
                         signUpRequest.encodePassword(
                                 passwordEncoder.encode(signUpRequest.getPassword())

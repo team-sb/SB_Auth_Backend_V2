@@ -37,6 +37,9 @@ public class User {
     @Column(nullable = false)
     private LocalDate birthDay;
 
+    @Embedded
+    private ProfileImage profileImage;
+
     public User(SignupRequest signUpRequest) {
         this.email = signUpRequest.getEmail();
         this.password = signUpRequest.getPassword();
@@ -44,6 +47,10 @@ public class User {
         this.phoneNumber = signUpRequest.getPhoneNumber();
         this.gender = signUpRequest.getGender();
         this.birthDay = signUpRequest.getBirthDay();
+    }
+
+    public void updateProfileImage(ProfileImage profileImage) {
+        this.profileImage = profileImage;
     }
 
 }

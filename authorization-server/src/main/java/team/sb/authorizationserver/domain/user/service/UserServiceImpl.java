@@ -5,6 +5,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import team.sb.authorizationserver.domain.authcode.facade.AuthCodeFacade;
 import team.sb.authorizationserver.domain.oauth.entity.OauthDetails;
 import team.sb.authorizationserver.domain.oauth.facade.OauthFacade;
@@ -15,6 +16,7 @@ import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.entity.User;
 import team.sb.authorizationserver.domain.user.exception.InvalidPasswordException;
 import team.sb.authorizationserver.domain.user.facade.UserFacade;
+import team.sb.authorizationserver.domain.user.facade.UserProfileFacade;
 import team.sb.authorizationserver.global.exception.InvalidTokenException;
 import team.sb.authorizationserver.global.security.jwt.JwtTokenProvider;
 import team.sb.authorizationserver.global.security.jwt.dto.TokenResponse;
@@ -30,12 +32,18 @@ public class UserServiceImpl implements UserService {
     private final AuthCodeFacade authCodeFacade;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserProfileFacade userProfileFacade;
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
     @Override
-    public void signup(SignupRequest signUpRequest) {
-        userFacade.registerUser(signUpRequest);
+    public void signup(MultipartFile profile, SignupRequest signUpRequest) {
+        User user = userFacade.registerUser(signUpRequest);
+
+        if(profile != null) {
+            userProfileFacade.addProfileImage(profile, user);
+        }
+
     }
 
     @Async
