@@ -22,7 +22,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void signup(@RequestPart(required = false) MultipartFile profile,
-                       @RequestBody @Valid SignupRequest signUpRequest) {
+                       @RequestPart @Valid SignupRequest signUpRequest) {
         userService.signup(profile, signUpRequest);
     }
 
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PutMapping("/auth")
-    public TokenResponse reissue(@RequestParam("X-Refresh-Token") String refreshToken) {
+    public TokenResponse reissue(@RequestHeader("X-Refresh-Token") String refreshToken) {
         return userService.reissue(refreshToken);
     }
 
