@@ -10,6 +10,7 @@ import team.sb.authorizationserver.domain.authcode.repository.AuthCodeRepository
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.entity.User;
 import team.sb.authorizationserver.domain.user.exception.UserAlreadyExistsException;
+import team.sb.authorizationserver.domain.user.exception.UserNotFoundException;
 import team.sb.authorizationserver.domain.user.repository.UserRepository;
 
 @RequiredArgsConstructor
@@ -31,6 +32,11 @@ public class UserFacade {
                         )
                 )
         );
+    }
+
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
     public String getRandomCode() {
