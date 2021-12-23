@@ -31,11 +31,9 @@ public class JwtTokenProvider {
         String refresh = generateRefreshToken(clientId);
 
         refreshTokenRepository.save(
-                RefreshToken.builder()
-                        .clientId(clientId)
-                        .refreshToken(refresh)
-                        .ttl(jwtProperties.getRefreshExp())
-                        .build()
+                new RefreshToken(
+                        clientId, refresh
+                )
         );
 
         return new TokenResponse(access, refresh);

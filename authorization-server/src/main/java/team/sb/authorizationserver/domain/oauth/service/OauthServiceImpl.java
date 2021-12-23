@@ -10,6 +10,8 @@ import team.sb.authorizationserver.domain.oauth.exception.InvalidClientSecret;
 import team.sb.authorizationserver.domain.oauth.exception.InvalidOauthCodeException;
 import team.sb.authorizationserver.domain.oauth.facade.OauthFacade;
 import team.sb.authorizationserver.domain.oauth.repository.OauthDetailsRepository;
+import team.sb.authorizationserver.domain.refreshtoken.entity.RefreshToken;
+import team.sb.authorizationserver.domain.refreshtoken.repository.RefreshTokenRepository;
 import team.sb.authorizationserver.global.security.jwt.JwtTokenProvider;
 import team.sb.authorizationserver.global.security.jwt.dto.TokenResponse;
 
@@ -19,6 +21,7 @@ public class OauthServiceImpl implements OauthService {
 
     private final OauthFacade oauthFacade;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final OauthDetailsRepository oauthDetailsRepository;
 
     @Transactional
@@ -49,7 +52,14 @@ public class OauthServiceImpl implements OauthService {
             throw InvalidOauthCodeException.EXCEPTION;
         }
 
-        return jwtTokenProvider.generateToken(clientId);
+        TokenResponse tokenResponse = jwtTokenProvider.generateToken(clientId);
+        refreshTokenRepository.save(
+                new RefreshToken(
+                        clientId, tokenResponse.getRefreshToken()
+                )
+        );
+
+        return tokenResponse;
     }
 
 }

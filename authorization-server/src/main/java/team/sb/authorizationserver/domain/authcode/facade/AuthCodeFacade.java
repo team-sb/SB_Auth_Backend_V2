@@ -7,6 +7,7 @@ import team.sb.authorizationserver.domain.authcode.repository.AuthCodeRepository
 import team.sb.authorizationserver.global.util.AuthUtil;
 import team.sb.authorizationserver.global.util.SesUtil;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -24,7 +25,9 @@ public class AuthCodeFacade {
                 .map(authCode -> authCode.update(code))
                 .or(() ->
                         Optional.of(
-                                new AuthCode(email, code)
+                                authCodeRepository.save(
+                                        new AuthCode(email, code)
+                                )
                         )
                 );
 
