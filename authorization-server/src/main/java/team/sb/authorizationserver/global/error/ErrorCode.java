@@ -14,6 +14,8 @@ public enum ErrorCode {
     USER_ALREADY_EXISTS(409, "User Already Exists"),
     INVALID_PASSWORD(401, "Invalid Password"),
 
+    INVALID_IMAGE(401, "Invalid Image"),
+
     INVALID_AUTH_CODE(401, "Invalid Auth Code"),
 
     INVALID_CLIENT_SECRET(401, "Invalid Client Secret"),
