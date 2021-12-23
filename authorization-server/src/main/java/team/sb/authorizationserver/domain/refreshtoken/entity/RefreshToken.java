@@ -6,8 +6,6 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RedisHash
 public class RefreshToken {
@@ -19,5 +17,11 @@ public class RefreshToken {
 
     @TimeToLive
     private Long ttl;
+
+    public RefreshToken(String clientId, String refreshToken) {
+        this.clientId = clientId;
+        this.refreshToken = refreshToken;
+        this.ttl = 300L;
+    }
 
 }
