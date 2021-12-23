@@ -1,7 +1,6 @@
 package team.sb.authorizationserver.domain.user.facade;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import team.sb.authorizationserver.domain.authcode.entity.AuthCode;
@@ -37,10 +36,6 @@ public class UserFacade {
     public User getByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
-    }
-
-    public String getRandomCode() {
-        return RandomStringUtils.random(6);
     }
 
     private void isAlreadyExists(String email, String phoneNumber) {
