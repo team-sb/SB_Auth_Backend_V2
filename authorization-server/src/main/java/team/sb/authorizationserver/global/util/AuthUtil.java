@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class AuthUtil {
 
     public String getRandomCode(Integer num) {
-        return RandomStringUtils.random(num);
+        return RandomStringUtils.randomAlphanumeric(num);
     }
 
 }
