@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import team.sb.authorizationserver.domain.oauth.api.dto.ClientDto;
 import team.sb.authorizationserver.domain.oauth.entity.OauthCode;
 import team.sb.authorizationserver.domain.oauth.entity.OauthDetails;
+import team.sb.authorizationserver.domain.oauth.exception.InvalidClientSecret;
+import team.sb.authorizationserver.domain.oauth.exception.InvalidOauthCodeException;
 import team.sb.authorizationserver.domain.oauth.facade.OauthFacade;
 import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
@@ -67,11 +69,11 @@ public class UserServiceImpl implements UserService {
         OauthCode oauthCode = oauthFacade.getCodeByClientId(clientId);
 
         if(!oauthDetails.getClientSecret().equals(clientDto.getClientSecret())) {
-            throw new RuntimeException("invalid client secret");
+            throw InvalidClientSecret.EXCEPTION;
         }
 
         if(!oauthCode.getCode().equals(code)) {
-            throw new RuntimeException("invalid code");
+            throw InvalidOauthCodeException.EXCEPTION;
         }
 
         return jwtTokenProvider.generateToken(code);
