@@ -8,12 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 import team.sb.authorizationserver.domain.authcode.facade.AuthCodeFacade;
 import team.sb.authorizationserver.domain.oauth.entity.OauthDetails;
 import team.sb.authorizationserver.domain.oauth.facade.OauthFacade;
+import team.sb.authorizationserver.domain.refreshtoken.repository.RefreshTokenRepository;
 import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.entity.User;
 import team.sb.authorizationserver.domain.user.exception.InvalidPasswordException;
 import team.sb.authorizationserver.domain.user.facade.UserFacade;
+import team.sb.authorizationserver.global.exception.InvalidTokenException;
+import team.sb.authorizationserver.global.security.jwt.JwtTokenProvider;
+import team.sb.authorizationserver.global.security.jwt.dto.TokenResponse;
 import team.sb.authorizationserver.global.util.AuthUtil;
 
 @RequiredArgsConstructor
@@ -25,6 +29,8 @@ public class UserServiceImpl implements UserService {
     private final OauthFacade oauthFacade;
     private final AuthCodeFacade authCodeFacade;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
     @Override
@@ -39,6 +45,7 @@ public class UserServiceImpl implements UserService {
         authCodeFacade.sendEmail(emailRequest.getEmail());
     }
 
+    @Transactional
     @Override
     public String login(LoginRequest loginRequest, String clientId, String redirectUri) {
         User user = userFacade.getByEmail(loginRequest.getEmail());
@@ -53,6 +60,18 @@ public class UserServiceImpl implements UserService {
         oauthFacade.newOauthCode(clientId, code);
 
         return code;
+    }
+
+    @Transactional
+    @Override
+    public TokenResponse reissue(String refreshToken) {
+        return refreshTokenRepository.findByRefreshToken(refreshToken)
+                .filter(token -> jwtTokenProvider.isRefresh(refreshToken))
+                .map(token -> {
+                    String clientId = token.getClientId();
+                    return jwtTokenProvider.generateToken(clientId);
+                })
+                .orElseThrow(() -> InvalidTokenException.EXCEPTION);
     }
 
 }
