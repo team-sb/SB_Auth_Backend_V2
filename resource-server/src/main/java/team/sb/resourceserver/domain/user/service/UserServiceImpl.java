@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import team.sb.resourceserver.domain.user.api.dto.UserInfoResponse;
 import team.sb.resourceserver.domain.user.entity.ProfileImage;
 import team.sb.resourceserver.domain.user.entity.User;
 import team.sb.resourceserver.domain.user.facade.UserFacade;
@@ -27,6 +28,14 @@ public class UserServiceImpl implements UserService {
         user.updateProfileImage(
                 new ProfileImage(fileName, fileUrl)
         );
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public UserInfoResponse getUserInfo() {
+        User user = userFacade.getCurrentUser();
+
+        return new UserInfoResponse(user);
     }
 
 }
