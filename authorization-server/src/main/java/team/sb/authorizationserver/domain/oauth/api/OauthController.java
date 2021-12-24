@@ -14,8 +14,9 @@ public class OauthController {
     private final OauthService oauthService;
 
     @PostMapping("/client")
-    public ClientDto registerClient() {
-        return oauthService.registerClient();
+    public ClientDto registerClient(@RequestParam(value = "authorized_type") String authorizedType,
+                                    @RequestParam String scope) {
+        return oauthService.registerClient(authorizedType, scope);
     }
 
     @GetMapping("/token")
