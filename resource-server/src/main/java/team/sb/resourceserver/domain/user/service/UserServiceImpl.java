@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateProfileImage(String email, MultipartFile multipartFile) {
-        User user = userFacade.getByEmail(email);
+    public void updateProfileImage(MultipartFile multipartFile) {
+        User user = userFacade.getCurrentUser();
 
         String fileName = s3Util.upload(multipartFile);
         String fileUrl = s3Util.getFileUrl(fileName);
