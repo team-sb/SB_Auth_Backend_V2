@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String code = authUtil.getRandomCode(7);
-        oauthFacade.newOauthCode(clientId, code);
+        oauthFacade.newOauthCode(clientId, code, loginRequest.getEmail());
 
         return code;
     }
@@ -76,8 +76,8 @@ public class UserServiceImpl implements UserService {
         return refreshTokenRepository.findByRefreshToken(refreshToken)
                 .filter(token -> jwtTokenProvider.isRefresh(refreshToken))
                 .map(token -> {
-                    String clientId = token.getClientId();
-                    return jwtTokenProvider.generateToken(clientId);
+                    String email = token.getUserEmail();
+                    return jwtTokenProvider.generateToken(email);
                 })
                 .orElseThrow(() -> InvalidTokenException.EXCEPTION);
     }

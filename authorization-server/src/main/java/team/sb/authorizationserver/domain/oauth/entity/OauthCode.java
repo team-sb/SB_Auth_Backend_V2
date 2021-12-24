@@ -16,11 +16,14 @@ public class OauthCode {
 
     private String code;
 
+    private String userEmail;
+
     private Long ttl;
 
-    public OauthCode(String clientId, String code) {
+    public OauthCode(String clientId, String code, String userEmail) {
         this.clientId = clientId;
         this.code = code;
+        this.userEmail = userEmail;
         this.ttl = 180L;
     }
 

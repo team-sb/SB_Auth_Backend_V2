@@ -52,7 +52,7 @@ public class OauthServiceImpl implements OauthService {
             throw InvalidOauthCodeException.EXCEPTION;
         }
 
-        TokenResponse tokenResponse = jwtTokenProvider.generateToken(clientId);
+        TokenResponse tokenResponse = jwtTokenProvider.generateToken(oauthCode.getUserEmail());
         refreshTokenRepository.save(
                 new RefreshToken(
                         clientId, tokenResponse.getRefreshToken()
