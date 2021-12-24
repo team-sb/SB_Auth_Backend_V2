@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
+import team.sb.authorizationserver.domain.user.api.dto.response.LoginResponse;
 import team.sb.authorizationserver.domain.user.service.UserService;
 import team.sb.authorizationserver.global.security.jwt.dto.TokenResponse;
 
@@ -32,9 +33,9 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public String login(@RequestParam String clientId,
-                        @RequestParam String redirectUri,
-                        @RequestBody @Valid LoginRequest loginRequest) {
+    public LoginResponse login(@RequestParam String clientId,
+                               @RequestParam String redirectUri,
+                               @RequestBody @Valid LoginRequest loginRequest) {
         return userService.login(loginRequest, clientId, redirectUri);
     }
 
