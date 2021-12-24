@@ -39,4 +39,8 @@ public class User {
     @Embedded
     private ProfileImage profileImage;
 
+    public void updateProfileImage(ProfileImage profile) {
+        this.profileImage = profile;
+    }
+
 }
