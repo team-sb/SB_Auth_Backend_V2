@@ -26,12 +26,15 @@ public class OauthServiceImpl implements OauthService {
 
     @Transactional
     @Override
-    public ClientDto registerClient() {
+    public ClientDto registerClient(String authorizedType, String scope) {
         ClientDto response = oauthFacade.getClientDetails();
 
         oauthDetailsRepository.save(
                 new OauthDetails(
-                        response.getClientId(), response.getClientSecret()
+                        response.getClientId(),
+                        response.getClientSecret(),
+                        authorizedType,
+                        scope
                 )
         );
 
@@ -52,7 +55,7 @@ public class OauthServiceImpl implements OauthService {
             throw InvalidOauthCodeException.EXCEPTION;
         }
 
-        TokenResponse tokenResponse = jwtTokenProvider.generateToken(clientId);
+        TokenResponse tokenResponse = jwtTokenProvider.generateToken(oauthCode.getUserEmail());
         refreshTokenRepository.save(
                 new RefreshToken(
                         clientId, tokenResponse.getRefreshToken()

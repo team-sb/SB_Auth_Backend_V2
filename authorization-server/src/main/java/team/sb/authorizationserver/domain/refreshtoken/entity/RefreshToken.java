@@ -12,7 +12,7 @@ import org.springframework.data.redis.core.index.Indexed;
 public class RefreshToken {
 
     @Id
-    private String clientId;
+    private String userEmail;
 
     @Indexed
     private String refreshToken;
@@ -20,8 +20,8 @@ public class RefreshToken {
     @TimeToLive
     private Long ttl;
 
-    public RefreshToken(String clientId, String refreshToken) {
-        this.clientId = clientId;
+    public RefreshToken(String userEmail, String refreshToken) {
+        this.userEmail = userEmail;
         this.refreshToken = refreshToken;
         this.ttl = 300L;
     }

@@ -13,6 +13,7 @@ import team.sb.authorizationserver.domain.refreshtoken.repository.RefreshTokenRe
 import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
+import team.sb.authorizationserver.domain.user.api.dto.response.LoginResponse;
 import team.sb.authorizationserver.domain.user.entity.User;
 import team.sb.authorizationserver.domain.user.exception.InvalidPasswordException;
 import team.sb.authorizationserver.domain.user.facade.UserFacade;
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public String login(LoginRequest loginRequest, String clientId, String redirectUri) {
+    public LoginResponse login(LoginRequest loginRequest, String clientId, String redirectUri) {
         User user = userFacade.getByEmail(loginRequest.getEmail());
         OauthDetails oauthDetails = oauthFacade.getDetailsByClientId(clientId);
         oauthDetails.updateRedirectUri(redirectUri);
@@ -65,9 +66,9 @@ public class UserServiceImpl implements UserService {
         }
 
         String code = authUtil.getRandomCode(7);
-        oauthFacade.newOauthCode(clientId, code);
+        oauthFacade.newOauthCode(clientId, code, loginRequest.getEmail());
 
-        return code;
+        return new LoginResponse(code);
     }
 
     @Transactional
@@ -76,8 +77,8 @@ public class UserServiceImpl implements UserService {
         return refreshTokenRepository.findByRefreshToken(refreshToken)
                 .filter(token -> jwtTokenProvider.isRefresh(refreshToken))
                 .map(token -> {
-                    String clientId = token.getClientId();
-                    return jwtTokenProvider.generateToken(clientId);
+                    String email = token.getUserEmail();
+                    return jwtTokenProvider.generateToken(email);
                 })
                 .orElseThrow(() -> InvalidTokenException.EXCEPTION);
     }

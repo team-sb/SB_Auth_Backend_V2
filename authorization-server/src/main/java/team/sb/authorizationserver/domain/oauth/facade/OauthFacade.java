@@ -35,10 +35,10 @@ public class OauthFacade {
                 .orElseThrow(() -> ClientNotFoundException.EXCEPTION);
     }
 
-    public void newOauthCode(String clientId, String code) {
+    public void newOauthCode(String clientId, String code, String email) {
         oauthCodeRepository.save(
                 new OauthCode(
-                        clientId, code
+                        clientId, code, email
                 )
         );
     }
