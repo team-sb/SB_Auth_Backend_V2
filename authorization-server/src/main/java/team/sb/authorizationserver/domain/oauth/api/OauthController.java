@@ -19,7 +19,7 @@ public class OauthController {
         return oauthService.registerClient(authorizedType, scope);
     }
 
-    @GetMapping("/token")
+    @PostMapping("/token")
     public TokenResponse getToken(@RequestParam String code,
                                   @RequestBody ClientDto clientDto) {
         return oauthService.getToken(code, clientDto);
