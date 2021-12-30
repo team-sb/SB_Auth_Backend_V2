@@ -2,19 +2,19 @@ package team.sb.authorizationserver.domain.user.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
-import team.sb.authorizationserver.domain.user.api.dto.response.LoginResponse;
 import team.sb.authorizationserver.domain.user.service.UserService;
 
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RequestMapping("/user")
-@RestController
+@Controller
 public class UserController {
 
     private final UserService userService;
@@ -32,10 +32,12 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public LoginResponse login(@RequestParam String clientId,
+    public String login(@RequestParam String clientId,
                                @RequestParam String redirectUri,
+                               @RequestParam(name = "authorized_type") String authorizedType,
                                @RequestBody @Valid LoginRequest loginRequest) {
-        return userService.login(loginRequest, clientId, redirectUri);
+        String code = userService.login(loginRequest, clientId, redirectUri, authorizedType);
+        return "redirect:" + redirectUri + "?code=" + code;
     }
 
 }

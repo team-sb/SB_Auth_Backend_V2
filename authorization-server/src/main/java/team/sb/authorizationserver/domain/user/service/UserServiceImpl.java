@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import team.sb.authorizationserver.domain.authcode.facade.AuthCodeFacade;
 import team.sb.authorizationserver.domain.oauth.entity.OauthDetails;
+import team.sb.authorizationserver.domain.oauth.exception.ClientNotFoundException;
 import team.sb.authorizationserver.domain.oauth.facade.OauthFacade;
 import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
-import team.sb.authorizationserver.domain.user.api.dto.response.LoginResponse;
 import team.sb.authorizationserver.domain.user.entity.User;
 import team.sb.authorizationserver.domain.user.exception.InvalidPasswordException;
 import team.sb.authorizationserver.domain.user.facade.UserFacade;
@@ -50,19 +50,23 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public LoginResponse login(LoginRequest loginRequest, String clientId, String redirectUri) {
+    public String login(LoginRequest loginRequest, String clientId, String redirectUri, String authorizedType) {
         User user = userFacade.getByEmail(loginRequest.getEmail());
         OauthDetails oauthDetails = oauthFacade.getDetailsByClientId(clientId);
-        oauthDetails.updateRedirectUri(redirectUri);
+        oauthDetails.setAuthorizedType(authorizedType);
 
         if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw InvalidPasswordException.EXCEPTION;
         }
 
+        if(!redirectUri.equals(oauthDetails.getWebServerRedirectUri())) {
+            throw ClientNotFoundException.EXCEPTION;
+        }
+
         String code = authUtil.getRandomCode(7);
         oauthFacade.newOauthCode(clientId, code, loginRequest.getEmail());
 
-        return new LoginResponse(code);
+        return code;
     }
 
 }
