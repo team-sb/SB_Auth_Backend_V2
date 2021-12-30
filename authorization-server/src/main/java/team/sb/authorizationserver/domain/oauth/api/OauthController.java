@@ -7,7 +7,7 @@ import team.sb.authorizationserver.domain.oauth.service.OauthService;
 import team.sb.authorizationserver.global.security.jwt.dto.TokenResponse;
 
 @RequiredArgsConstructor
-@RequestMapping("/oauth")
+@RequestMapping("/sbauth")
 @RestController
 public class OauthController {
 
