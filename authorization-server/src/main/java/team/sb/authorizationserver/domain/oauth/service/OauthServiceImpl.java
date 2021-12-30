@@ -12,6 +12,7 @@ import team.sb.authorizationserver.domain.oauth.facade.OauthFacade;
 import team.sb.authorizationserver.domain.oauth.repository.OauthDetailsRepository;
 import team.sb.authorizationserver.domain.refreshtoken.entity.RefreshToken;
 import team.sb.authorizationserver.domain.refreshtoken.repository.RefreshTokenRepository;
+import team.sb.authorizationserver.global.exception.InvalidTokenException;
 import team.sb.authorizationserver.global.security.jwt.JwtTokenProvider;
 import team.sb.authorizationserver.global.security.jwt.dto.TokenResponse;
 
@@ -41,6 +42,7 @@ public class OauthServiceImpl implements OauthService {
         return response;
     }
 
+    @Transactional
     @Override
     public TokenResponse getToken(String code, ClientDto clientDto) {
         String clientId = clientDto.getClientId();
@@ -63,6 +65,18 @@ public class OauthServiceImpl implements OauthService {
         );
 
         return tokenResponse;
+    }
+
+    @Transactional
+    @Override
+    public TokenResponse reissue(String refreshToken) {
+        return refreshTokenRepository.findByRefreshToken(refreshToken)
+                .filter(token -> jwtTokenProvider.isRefresh(refreshToken))
+                .map(token -> {
+                    String email = token.getUserEmail();
+                    return jwtTokenProvider.generateToken(email);
+                })
+                .orElseThrow(() -> InvalidTokenException.EXCEPTION);
     }
 
 }

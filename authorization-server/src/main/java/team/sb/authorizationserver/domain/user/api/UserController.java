@@ -9,7 +9,6 @@ import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.api.dto.response.LoginResponse;
 import team.sb.authorizationserver.domain.user.service.UserService;
-import team.sb.authorizationserver.global.security.jwt.dto.TokenResponse;
 
 import javax.validation.Valid;
 
@@ -37,11 +36,6 @@ public class UserController {
                                @RequestParam String redirectUri,
                                @RequestBody @Valid LoginRequest loginRequest) {
         return userService.login(loginRequest, clientId, redirectUri);
-    }
-
-    @PutMapping("/auth")
-    public TokenResponse reissue(@RequestHeader("X-Refresh-Token") String refreshToken) {
-        return userService.reissue(refreshToken);
     }
 
 }
