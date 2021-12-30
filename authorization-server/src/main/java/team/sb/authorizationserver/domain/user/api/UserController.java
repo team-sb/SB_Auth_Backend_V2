@@ -34,10 +34,10 @@ public class UserController {
 
     @PostMapping("/auth")
     @ResponseStatus(HttpStatus.OK)
-    public String login(@RequestParam String clientId,
-                               @RequestParam String redirectUri,
-                               @RequestParam(name = "authorized_type") String authorizedType,
-                               @RequestBody @Valid LoginRequest loginRequest) {
+    public String login(@RequestParam(name = "client_id") String clientId,
+                        @RequestParam(name = "redirect_uri") String redirectUri,
+                        @RequestParam(name = "authorized_type") String authorizedType,
+                        @RequestBody @Valid LoginRequest loginRequest) {
         String code = userService.login(loginRequest, clientId, redirectUri, authorizedType);
         return "redirect:" + redirectUri + "?code=" + code;
     }
