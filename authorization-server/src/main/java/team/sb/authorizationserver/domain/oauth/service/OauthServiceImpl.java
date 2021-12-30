@@ -27,14 +27,14 @@ public class OauthServiceImpl implements OauthService {
 
     @Transactional
     @Override
-    public ClientDto registerClient(String authorizedType, String scope) {
+    public ClientDto registerClient(String redirectUri, String scope) { // scope : READ, WRITE, ALL
         ClientDto response = oauthFacade.getClientDetails();
 
         oauthDetailsRepository.save(
                 new OauthDetails(
                         response.getClientId(),
                         response.getClientSecret(),
-                        authorizedType,
+                        redirectUri,
                         scope
                 )
         );

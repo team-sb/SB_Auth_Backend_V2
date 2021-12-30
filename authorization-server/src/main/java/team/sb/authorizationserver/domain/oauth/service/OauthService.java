@@ -4,7 +4,7 @@ import team.sb.authorizationserver.domain.oauth.api.dto.ClientDto;
 import team.sb.authorizationserver.global.security.jwt.dto.TokenResponse;
 
 public interface OauthService {
-    ClientDto registerClient(String authorizedType, String scope);
+    ClientDto registerClient(String redirectUri, String scope);
     TokenResponse getToken(String code, ClientDto clientDto);
     TokenResponse reissue(String refreshToken);
 }

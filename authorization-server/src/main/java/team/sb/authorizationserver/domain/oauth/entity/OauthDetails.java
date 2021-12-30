@@ -22,26 +22,26 @@ public class OauthDetails {
     @Column(columnDefinition = "char(30)", nullable = false)
     private String scope;
 
-    @Column(columnDefinition = "char(50)")
+    @Column(columnDefinition = "char(50)", nullable = false)
     private String webServerRedirectUri;
 
-    @Column(columnDefinition = "char(20)", nullable = false)
+    @Column(columnDefinition = "char(20)")
     private String authorizedType;
 
     @Column(columnDefinition = "char(10)", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role authorities;
 
-    public OauthDetails(String clientId, String clientSecret, String authorizedType, String scope) {
+    public OauthDetails(String clientId, String clientSecret, String redirectUri, String scope) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.scope = scope;
-        this.authorizedType = authorizedType;
+        this.webServerRedirectUri = redirectUri;
         this.authorities = Role.ROLE_USER;
     }
 
-    public void updateRedirectUri(String redirectUri) {
-        this.webServerRedirectUri = redirectUri;
+    public void setAuthorizedType(String authorizedType) {
+        this.authorizedType = authorizedType;
     }
 
 }
