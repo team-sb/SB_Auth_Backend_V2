@@ -27,11 +27,13 @@ public class UserController {
     }
 
     @PostMapping("/email")
+    @ResponseStatus(HttpStatus.OK)
     public void sendEmail(@RequestBody @Valid EmailRequest emailRequest) {
         userService.sendEmail(emailRequest);
     }
 
     @PostMapping("/auth")
+    @ResponseStatus(HttpStatus.OK)
     public String login(@RequestParam String clientId,
                                @RequestParam String redirectUri,
                                @RequestParam(name = "authorized_type") String authorizedType,
