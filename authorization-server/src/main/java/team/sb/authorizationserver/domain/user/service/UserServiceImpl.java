@@ -10,7 +10,7 @@ import team.sb.authorizationserver.domain.authcode.facade.AuthCodeFacade;
 import team.sb.authorizationserver.domain.oauth.entity.OauthDetails;
 import team.sb.authorizationserver.domain.oauth.exception.ClientNotFoundException;
 import team.sb.authorizationserver.domain.oauth.facade.OauthFacade;
-import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
+import team.sb.authorizationserver.domain.user.api.dto.EmailDto;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.entity.User;
@@ -44,8 +44,8 @@ public class UserServiceImpl implements UserService {
     @Async
     @Transactional
     @Override
-    public void sendEmail(EmailRequest emailRequest) {
-        authCodeFacade.sendEmail(emailRequest.getEmail());
+    public void sendEmail(EmailDto emailDto) {
+        authCodeFacade.sendEmail(emailDto.getEmail());
     }
 
     @Transactional

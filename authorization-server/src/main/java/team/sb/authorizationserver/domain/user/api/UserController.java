@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import team.sb.authorizationserver.domain.user.api.dto.request.EmailRequest;
+import team.sb.authorizationserver.domain.user.api.dto.EmailDto;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.service.UserService;
@@ -28,8 +28,8 @@ public class UserController {
 
     @PostMapping("/email")
     @ResponseStatus(HttpStatus.OK)
-    public void sendEmail(@RequestBody @Valid EmailRequest emailRequest) {
-        userService.sendEmail(emailRequest);
+    public void sendEmail(@RequestBody @Valid EmailDto emailDto) {
+        userService.sendEmail(emailDto);
     }
 
     @PostMapping("/auth")
@@ -41,5 +41,7 @@ public class UserController {
         String code = userService.login(loginRequest, clientId, redirectUri, authorizedType);
         return "redirect:" + redirectUri + "?code=" + code;
     }
+
+
 
 }
