@@ -23,6 +23,7 @@ public class UserFacade {
     public User registerUser(SignupRequest signUpRequest) {
         isAlreadyExists(signUpRequest.getEmail(), signUpRequest.getPhoneNumber());
         isValidCode(signUpRequest.getEmail(), signUpRequest.getCode());
+        // 전화번호 인증로직 추가
 
         return userRepository.save(
                 new User(
@@ -35,6 +36,11 @@ public class UserFacade {
 
     public User getByEmail(String email) {
         return userRepository.findByEmail(email)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
+
+    public User getByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 

@@ -11,6 +11,7 @@ import team.sb.authorizationserver.domain.oauth.entity.OauthDetails;
 import team.sb.authorizationserver.domain.oauth.exception.ClientNotFoundException;
 import team.sb.authorizationserver.domain.oauth.facade.OauthFacade;
 import team.sb.authorizationserver.domain.user.api.dto.EmailDto;
+import team.sb.authorizationserver.domain.user.api.dto.request.FindEmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.entity.User;
@@ -38,7 +39,6 @@ public class UserServiceImpl implements UserService {
         if(profile != null) {
             userProfileFacade.addProfileImage(profile, user);
         }
-
     }
 
     @Async
@@ -67,6 +67,15 @@ public class UserServiceImpl implements UserService {
         oauthFacade.newOauthCode(clientId, code, loginRequest.getEmail());
 
         return code;
+    }
+
+    @Override
+    public EmailDto findEmail(FindEmailRequest findEmailRequest) {
+        User user = userFacade.getByPhoneNumber(findEmailRequest.getPhoneNumber());
+
+        // code 인증 로직 추가
+
+        return new EmailDto(user.getEmail());
     }
 
 }
