@@ -19,8 +19,8 @@ public class UserController {
 
     private final UserService userService;
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void signup(@RequestPart(required = false) MultipartFile profile,
                        @RequestPart @Valid SignupRequest signUpRequest) {
         userService.signup(profile, signUpRequest);
