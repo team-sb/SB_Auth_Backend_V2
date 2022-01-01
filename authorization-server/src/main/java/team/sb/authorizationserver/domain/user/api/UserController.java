@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import team.sb.authorizationserver.domain.user.api.dto.EmailDto;
+import team.sb.authorizationserver.domain.user.api.dto.request.FindEmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.LoginRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.service.UserService;
@@ -39,9 +40,14 @@ public class UserController {
                         @RequestParam(name = "authorized_type") String authorizedType,
                         @RequestBody @Valid LoginRequest loginRequest) {
         String code = userService.login(loginRequest, clientId, redirectUri, authorizedType);
+        System.out.println(code);
         return "redirect:" + redirectUri + "?code=" + code;
     }
 
-
+    @PostMapping("/find/email")
+    @ResponseStatus(HttpStatus.OK)
+    public EmailDto findEmail(@RequestBody @Valid FindEmailRequest findEmailRequest) {
+        return userService.findEmail(findEmailRequest);
+    }
 
 }
