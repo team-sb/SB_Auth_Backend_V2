@@ -52,6 +52,16 @@ public class OauthServiceImpl implements OauthService {
         return response;
     }
 
+    @Override
+    public void validateUser(String clientId, String redirectUri) {
+        oauthFacade.getDetailsByClientId(clientId);
+        OauthDetails oauthDetails = oauthFacade.getDetailsByClientId(clientId);
+
+        if(oauthDetails.getWebServerRedirectUri().isEmpty()) {
+            throw ClientNotFoundException.EXCEPTION;
+        }
+    }
+
     @Transactional
     @Override
     public String login(LoginRequest loginRequest, String clientId, String redirectUri, String authorizedType) {

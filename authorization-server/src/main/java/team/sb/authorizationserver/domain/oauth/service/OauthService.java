@@ -6,6 +6,7 @@ import team.sb.authorizationserver.global.security.jwt.dto.TokenResponse;
 
 public interface OauthService {
     ClientDto registerClient(String redirectUri, String scope);
+    void validateUser(String clientId, String redirectUri);
     String login(LoginRequest loginRequest, String clientId, String redirectUri, String authorizedType);
     TokenResponse getToken(String code, ClientDto clientDto);
     TokenResponse reissue(String refreshToken);
