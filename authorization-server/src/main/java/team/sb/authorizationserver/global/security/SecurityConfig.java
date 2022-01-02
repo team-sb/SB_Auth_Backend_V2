@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/sbauth/authorize").permitAll()
                 .antMatchers(HttpMethod.PUT,  "/sbauth/authorize").permitAll()
                 .antMatchers(HttpMethod.POST, "/sbauth/client").permitAll()
+                .antMatchers(HttpMethod.POST, "/sbauth/client-id").permitAll()
                 .antMatchers(HttpMethod.POST, "/sbauth/token").permitAll()
                 .anyRequest().authenticated()
 
