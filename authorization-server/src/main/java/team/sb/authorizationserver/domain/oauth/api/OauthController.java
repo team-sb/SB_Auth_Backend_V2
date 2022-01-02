@@ -24,7 +24,7 @@ public class OauthController {
     }
 
     @PostMapping("/authorize")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.FOUND)
     public String login(@RequestParam(name = "client_id") String clientId,
                         @RequestParam(name = "redirect_uri") String redirectUri,
                         @RequestParam(name = "authorized_type") String authorizedType,
