@@ -23,6 +23,12 @@ public class OauthController {
         return oauthService.registerClient(redirectUri, scope);
     }
 
+    @PostMapping("/client-info")
+    public void validateUser(@RequestParam(name = "client_id") String clientId,
+                              @RequestParam(name = "redirect_uri") String redirectUri) {
+        oauthService.validateUser(clientId, redirectUri);
+    }
+
     @PostMapping("/authorize")
     @ResponseStatus(HttpStatus.FOUND)
     public String login(@RequestParam(name = "client_id") String clientId,
