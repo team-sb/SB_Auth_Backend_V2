@@ -41,7 +41,7 @@ public class OauthController {
         return oauthService.getToken(code, clientDto);
     }
 
-    @PutMapping("/authorize")
+    @PutMapping("/token")
     public TokenResponse reissue(@RequestHeader("X-Refresh-Token") String refreshToken) {
         return oauthService.reissue(refreshToken);
     }
