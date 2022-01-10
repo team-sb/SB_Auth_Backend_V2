@@ -2,6 +2,7 @@ package team.sb.authorizationserver.domain.oauth.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team.sb.authorizationserver.domain.oauth.api.dto.ClientDto;
 import team.sb.authorizationserver.domain.oauth.api.dto.request.RegisterClientRequest;
@@ -13,7 +14,7 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RequestMapping("/sbauth")
-@RestController
+@Controller
 public class OauthController {
 
     private final OauthService oauthService;
@@ -35,12 +36,14 @@ public class OauthController {
     }
 
     @PostMapping("/token")
+    @ResponseStatus(HttpStatus.OK)
     public TokenResponse getToken(@RequestParam String code,
                                   @RequestBody ClientDto clientDto) {
         return oauthService.getToken(code, clientDto);
     }
 
     @PutMapping("/token")
+    @ResponseStatus(HttpStatus.OK)
     public TokenResponse reissue(@RequestHeader("X-Refresh-Token") String refreshToken) {
         return oauthService.reissue(refreshToken);
     }
