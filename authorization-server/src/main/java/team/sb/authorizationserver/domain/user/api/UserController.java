@@ -2,7 +2,6 @@ package team.sb.authorizationserver.domain.user.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import team.sb.authorizationserver.domain.user.api.dto.EmailDto;
@@ -15,7 +14,7 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RequestMapping("/user")
-@Controller
+@RestController
 public class UserController {
 
     private final UserService userService;
@@ -28,18 +27,18 @@ public class UserController {
     }
 
     @PostMapping("/email")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public void sendEmail(@RequestBody @Valid EmailDto emailDto) {
         userService.sendEmail(emailDto);
     }
 
     @PostMapping("/find/email")
-    @ResponseStatus(HttpStatus.OK)
     public EmailDto findEmail(@RequestBody @Valid FindEmailRequest findEmailRequest) {
         return userService.findEmail(findEmailRequest);
     }
 
     @PatchMapping("/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePassword(@RequestBody @Valid ChangePasswordRequest changePasswordRequest) {
         userService.changePassword(changePasswordRequest);
     }
