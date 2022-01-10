@@ -53,4 +53,8 @@ public class User {
         this.profileImage = profileImage;
     }
 
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
 }
