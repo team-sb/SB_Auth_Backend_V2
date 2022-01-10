@@ -31,8 +31,7 @@ public class OauthController {
                         @RequestParam(name = "authorized_type") String authorizedType,
                         @RequestBody @Valid LoginRequest loginRequest) {
         String code = oauthService.login(loginRequest, clientId, redirectUri, authorizedType);
-//        return "redirect:" + redirectUri + "?code=" + code;
-        return code;
+        return "redirect:" + redirectUri + "?code=" + code;
     }
 
     @PostMapping("/token")
