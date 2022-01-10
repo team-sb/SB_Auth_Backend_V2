@@ -46,7 +46,8 @@ public class OauthServiceImpl implements OauthService {
                         response.getClientId(),
                         response.getClientSecret(),
                         request.getRedirectUri(),
-                        request.getApplicationName()
+                        request.getApplicationName(),
+                        request.getApplicationIntroduce()
                 )
         );
 
@@ -60,7 +61,7 @@ public class OauthServiceImpl implements OauthService {
         OauthDetails oauthDetails = oauthFacade.getDetailsByClientId(clientId);
         oauthDetails.setAuthorizedType(authorizedType);
 
-        if(!redirectUri.equals(oauthDetails.getWebServerRedirectUri())) {
+        if(!redirectUri.equals(oauthDetails.getWebRedirectUri())) {
             throw ClientNotFoundException.EXCEPTION;
         }
 

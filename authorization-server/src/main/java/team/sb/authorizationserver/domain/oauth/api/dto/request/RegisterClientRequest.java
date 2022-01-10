@@ -17,4 +17,8 @@ public class RegisterClientRequest {
     @Size(max = 20, message = "applicationName은 20글자 이하여야 합니다.")
     private String applicationName;
 
+    @NotBlank(message = "applicationIntroduce는 Null, 공백을 허용하지 않습니다.")
+    @Size(max = 100, message = "applicationIntroduce는 100글자 이하여야 합니다.")
+    private String applicationIntroduce;
+
 }

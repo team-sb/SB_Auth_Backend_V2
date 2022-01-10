@@ -22,8 +22,11 @@ public class OauthDetails {
     @Column(columnDefinition = "char(20)", nullable = false)
     private String applicationName;
 
+    @Column(columnDefinition = "char(100)", nullable = false)
+    private String applicationIntroduce;
+
     @Column(columnDefinition = "char(50)", nullable = false)
-    private String webServerRedirectUri;
+    private String webRedirectUri;
 
     @Column(columnDefinition = "char(20)")
     private String authorizedType;
@@ -32,11 +35,13 @@ public class OauthDetails {
     @Enumerated(EnumType.STRING)
     private Role authorities;
 
-    public OauthDetails(String clientId, String clientSecret, String redirectUri, String applicationName) {
+    public OauthDetails(String clientId, String clientSecret, String redirectUri,
+                        String applicationName, String applicationIntroduce) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.applicationName = applicationName;
-        this.webServerRedirectUri = redirectUri;
+        this.applicationIntroduce = applicationIntroduce;
+        this.webRedirectUri = redirectUri;
         this.authorities = Role.ROLE_USER;
     }
 
