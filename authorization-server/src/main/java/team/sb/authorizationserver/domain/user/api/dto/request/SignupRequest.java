@@ -37,8 +37,8 @@ public class SignupRequest {
     private Gender gender;
 
     @DateTimeFormat(pattern="yyyy-MM-dd")
-    @NotNull(message = "birthDay는 Null, 공백을 허용하지 않습니다.")
-    private LocalDate birthDay;
+    @NotNull(message = "birthday는 Null, 공백을 허용하지 않습니다.")
+    private LocalDate birthday;
 
     public SignupRequest encodePassword(String password) {
         this.password = password;
