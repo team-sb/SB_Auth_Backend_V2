@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.sb.authorizationserver.domain.oauth.api.dto.ClientDto;
+import team.sb.authorizationserver.domain.oauth.api.dto.request.RegisterClientRequest;
 import team.sb.authorizationserver.domain.oauth.entity.OauthCode;
 import team.sb.authorizationserver.domain.oauth.entity.OauthDetails;
 import team.sb.authorizationserver.domain.oauth.exception.ClientNotFoundException;
@@ -37,29 +38,19 @@ public class OauthServiceImpl implements OauthService {
 
     @Transactional
     @Override
-    public ClientDto registerClient(String redirectUri, String scope) { // scope : READ, WRITE, ALL
+    public ClientDto registerClient(RegisterClientRequest request) {
         ClientDto response = oauthFacade.getClientDetails();
 
         oauthDetailsRepository.save(
                 new OauthDetails(
                         response.getClientId(),
                         response.getClientSecret(),
-                        redirectUri,
-                        scope
+                        request.getRedirectUri(),
+                        request.getApplicationName()
                 )
         );
 
         return response;
-    }
-
-    @Override
-    public void validateUser(String clientId, String redirectUri) {
-        oauthFacade.getDetailsByClientId(clientId);
-        OauthDetails oauthDetails = oauthFacade.getDetailsByClientId(clientId);
-
-        if(oauthDetails.getWebServerRedirectUri().isEmpty()) {
-            throw ClientNotFoundException.EXCEPTION;
-        }
     }
 
     @Transactional
@@ -69,12 +60,12 @@ public class OauthServiceImpl implements OauthService {
         OauthDetails oauthDetails = oauthFacade.getDetailsByClientId(clientId);
         oauthDetails.setAuthorizedType(authorizedType);
 
-        if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw InvalidPasswordException.EXCEPTION;
-        }
-
         if(!redirectUri.equals(oauthDetails.getWebServerRedirectUri())) {
             throw ClientNotFoundException.EXCEPTION;
+        }
+
+        if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw InvalidPasswordException.EXCEPTION;
         }
 
         String code = authUtil.getRandomCode(7);
