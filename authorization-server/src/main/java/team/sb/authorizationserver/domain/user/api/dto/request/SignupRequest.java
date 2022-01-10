@@ -2,14 +2,10 @@ package team.sb.authorizationserver.domain.user.api.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import team.sb.authorizationserver.domain.user.entity.Gender;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Getter
@@ -30,11 +26,11 @@ public class SignupRequest {
 
     @NotBlank(message = "name은 Null, 공백을 허용하지 않습니다.")
     @Pattern(regexp = "^[\\S]+$", message = "name은 띄어쓰기를 허용하지 않습니다.")
-    @Length(max = 5, message = "name은 5글자 아래여야 합니다.")
+    @Size(max = 5, message = "name은 5글자 아래여야 합니다.")
     private String name;
 
     @NotBlank(message = "phoneNumber는 Null, 공백을 허용하지 않습니다.")
-    @Length(min = 11, max = 11, message = "phoneNumber는 11자여야합니다.")
+    @Size(min = 11, max = 11, message = "phoneNumber는 11자여야합니다.")
     private String phoneNumber;
 
     @NotNull(message = "gender는 Null, 공백을 허용하지 않습니다.")
