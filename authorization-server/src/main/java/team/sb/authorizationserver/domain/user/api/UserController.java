@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import team.sb.authorizationserver.domain.user.api.dto.EmailDto;
+import team.sb.authorizationserver.domain.user.api.dto.request.ChangePasswordRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.FindEmailRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.service.UserService;
@@ -36,6 +37,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public EmailDto findEmail(@RequestBody @Valid FindEmailRequest findEmailRequest) {
         return userService.findEmail(findEmailRequest);
+    }
+
+    @PatchMapping("/password")
+    public void changePassword(@RequestBody @Valid ChangePasswordRequest changePasswordRequest) {
+        userService.changePassword(changePasswordRequest);
     }
 
 }
