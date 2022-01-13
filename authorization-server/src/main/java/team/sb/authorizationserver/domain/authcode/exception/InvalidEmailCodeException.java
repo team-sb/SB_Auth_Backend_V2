@@ -3,13 +3,13 @@ package team.sb.authorizationserver.domain.authcode.exception;
 import team.sb.authorizationserver.global.error.ErrorCode;
 import team.sb.authorizationserver.global.error.exception.SBException;
 
-public class InvalidAuthCodeException extends SBException {
+public class InvalidEmailCodeException extends SBException {
 
     public static SBException EXCEPTION =
-            new InvalidAuthCodeException();
+            new InvalidEmailCodeException();
 
-    private InvalidAuthCodeException() {
-        super(ErrorCode.INVALID_AUTH_CODE);
+    private InvalidEmailCodeException() {
+        super(ErrorCode.INVALID_EMAIL_CODE);
     }
 
 }

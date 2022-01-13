@@ -17,7 +17,7 @@ public class SignupRequest {
     private String email;
 
     @NotBlank(message = "code는 Null, 공백을 허용하지 않습니다.")
-    private String code;
+    private String emailCode;
 
     @Pattern(regexp="(?=.*[a-z])(?=.*[!#$%&'()*+,-./:;<=>?@＼^_`{|}~])(?=.*[0-9])(?=\\S+$).{8,32}$",
             message = "password는 띄어쓰기를 제외한 영문 소문자와 숫자, 특수문자가 적어도 1개 이상씩 포함된 8자이상 32글자 이하의 비밀번호여야 합니다.")
@@ -32,6 +32,9 @@ public class SignupRequest {
     @NotBlank(message = "phoneNumber는 Null, 공백을 허용하지 않습니다.")
     @Size(min = 11, max = 11, message = "phoneNumber는 11자여야합니다.")
     private String phoneNumber;
+
+    @NotBlank(message = "code는 Null, 공백을 허용하지 않습니다.")
+    private String phoneCode;
 
     @NotNull(message = "gender는 Null, 공백을 허용하지 않습니다.")
     private Gender gender;

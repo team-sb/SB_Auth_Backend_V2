@@ -32,6 +32,8 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.0'
 
+    compileOnly group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 

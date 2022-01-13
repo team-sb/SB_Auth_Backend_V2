@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import team.sb.authorizationserver.domain.user.api.dto.EmailDto;
 import team.sb.authorizationserver.domain.user.api.dto.request.ChangePasswordRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.FindEmailRequest;
+import team.sb.authorizationserver.domain.user.api.dto.request.SendSmsRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.service.UserService;
 
@@ -30,6 +31,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public void sendEmail(@RequestBody @Valid EmailDto emailDto) {
         userService.sendEmail(emailDto);
+    }
+
+    @PostMapping("/phone")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void sendSms(@RequestBody @Valid SendSmsRequest sendSmsRequest) {
+        userService.sendSms(sendSmsRequest);
     }
 
     @PostMapping("/find/email")

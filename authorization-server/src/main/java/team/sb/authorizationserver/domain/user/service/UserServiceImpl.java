@@ -10,6 +10,7 @@ import team.sb.authorizationserver.domain.authcode.facade.AuthCodeFacade;
 import team.sb.authorizationserver.domain.user.api.dto.EmailDto;
 import team.sb.authorizationserver.domain.user.api.dto.request.ChangePasswordRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.FindEmailRequest;
+import team.sb.authorizationserver.domain.user.api.dto.request.SendSmsRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.entity.User;
 import team.sb.authorizationserver.domain.user.facade.UserFacade;
@@ -41,11 +42,19 @@ public class UserServiceImpl implements UserService {
         authCodeFacade.sendEmail(emailDto.getEmail());
     }
 
+    @Async
+    @Transactional
+    @Override
+    public void sendSms(SendSmsRequest sendSmsRequest) {
+        authCodeFacade.sendSms(sendSmsRequest.getPhoneNumber());
+    }
+
     @Override
     public EmailDto findEmail(FindEmailRequest findEmailRequest) {
-        User user = userFacade.getByPhoneNumber(findEmailRequest.getPhoneNumber());
+        String phoneNumber = findEmailRequest.getPhoneNumber();
+        User user = userFacade.getByPhoneNumber(phoneNumber);
 
-        // code 인증 로직 추가
+        userFacade.isValidPhoneNumber(phoneNumber, findEmailRequest.getCode());
 
         return new EmailDto(user.getEmail());
     }
@@ -53,9 +62,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
-        User user = userFacade.getByEmail(changePasswordRequest.getEmail());
+        String email = changePasswordRequest.getEmail();
+        User user = userFacade.getByEmail(email);
 
-        // code 인증 로직 추가
+        userFacade.isValidEmail(email, changePasswordRequest.getCode());
 
         user.updatePassword(passwordEncoder.encode(changePasswordRequest.getPassword()));
     }
