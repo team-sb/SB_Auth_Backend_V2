@@ -26,6 +26,11 @@ jwt:
   accessExp: ${JWT_ACCESS_EXP}
   refreshExp: ${JWT_REFRESH_EXP}
 
+coolsms:
+  key: ${SMS_KEY}
+  secret: ${SMS_SECRET}
+  phone-number: ${SENDER_PHONE_NUMBER}
+
 aws:
   ses:
     email: ${AWS_SES_BASE_EMAIL}
