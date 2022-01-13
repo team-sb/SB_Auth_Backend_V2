@@ -10,6 +10,7 @@ import team.sb.authorizationserver.domain.authcode.facade.AuthCodeFacade;
 import team.sb.authorizationserver.domain.user.api.dto.EmailDto;
 import team.sb.authorizationserver.domain.user.api.dto.request.ChangePasswordRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.FindEmailRequest;
+import team.sb.authorizationserver.domain.user.api.dto.request.SendSmsRequest;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.entity.User;
 import team.sb.authorizationserver.domain.user.facade.UserFacade;
@@ -39,6 +40,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void sendEmail(EmailDto emailDto) {
         authCodeFacade.sendEmail(emailDto.getEmail());
+    }
+
+    @Async
+    @Transactional
+    @Override
+    public void sendSms(SendSmsRequest sendSmsRequest) {
+        authCodeFacade.sendSms(sendSmsRequest.getPhoneNumber());
     }
 
     @Override
