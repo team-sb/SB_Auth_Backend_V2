@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import team.sb.authorizationserver.domain.authcode.entity.EmailAuthCode;
+import team.sb.authorizationserver.domain.authcode.entity.PhoneAuthCode;
 import team.sb.authorizationserver.domain.authcode.exception.InvalidAuthCodeException;
 import team.sb.authorizationserver.domain.authcode.repository.EmailAuthCodeRepository;
+import team.sb.authorizationserver.domain.authcode.repository.PhoneAuthCodeRepository;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
 import team.sb.authorizationserver.domain.user.entity.User;
 import team.sb.authorizationserver.domain.user.exception.UserAlreadyExistsException;
@@ -19,11 +21,12 @@ public class UserFacade {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailAuthCodeRepository emailAuthCodeRepository;
+    private final PhoneAuthCodeRepository phoneAuthCodeRepository;
 
     public User registerUser(SignupRequest signUpRequest) {
         isAlreadyExists(signUpRequest.getEmail(), signUpRequest.getPhoneNumber());
-        isValidCode(signUpRequest.getEmail(), signUpRequest.getCode());
-        // 전화번호 인증로직 추가
+        isValidEmail(signUpRequest.getEmail(), signUpRequest.getEmailCode());
+        isValidPhoneNumber(signUpRequest.getPhoneNumber(), signUpRequest.getPhoneCode());
 
         return userRepository.save(
                 new User(
@@ -50,11 +53,18 @@ public class UserFacade {
         }
     }
 
-    private void isValidCode(String email, String code) {
+    private void isValidEmail(String email, String code) {
         emailAuthCodeRepository.findById(email)
                 .map(EmailAuthCode::getCode)
                 .filter(s -> s.equals(code))
                 .orElseThrow(() -> InvalidAuthCodeException.EXCEPTION);
+    }
+
+    private void isValidPhoneNumber(String phoneNumber, String code) {
+        phoneAuthCodeRepository.findById(phoneNumber)
+                .map(PhoneAuthCode::getCode)
+                .filter(s -> s.equals(code))
+                .orElseThrow();
     }
 
 }
