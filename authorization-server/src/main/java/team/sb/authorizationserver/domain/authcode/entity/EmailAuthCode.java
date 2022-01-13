@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.TimeToLive;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RedisHash
-public class AuthCode {
+public class EmailAuthCode {
 
     @Id
     private String email;
@@ -20,13 +20,13 @@ public class AuthCode {
     @TimeToLive
     private Long codeExp;
 
-    public AuthCode update(String code) {
+    public EmailAuthCode update(String code) {
         this.code = code;
         this.codeExp = 180L;
         return this;
     }
 
-    public AuthCode(String email, String code) {
+    public EmailAuthCode(String email, String code) {
         this.email = email;
         this.code = code;
         this.codeExp = 180L;
