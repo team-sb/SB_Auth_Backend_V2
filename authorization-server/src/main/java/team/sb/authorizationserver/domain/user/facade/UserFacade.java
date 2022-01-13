@@ -5,7 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import team.sb.authorizationserver.domain.authcode.entity.EmailAuthCode;
 import team.sb.authorizationserver.domain.authcode.entity.PhoneAuthCode;
-import team.sb.authorizationserver.domain.authcode.exception.InvalidAuthCodeException;
+import team.sb.authorizationserver.domain.authcode.exception.InvalidEmailCodeException;
+import team.sb.authorizationserver.domain.authcode.exception.InvalidPhoneCodeException;
 import team.sb.authorizationserver.domain.authcode.repository.EmailAuthCodeRepository;
 import team.sb.authorizationserver.domain.authcode.repository.PhoneAuthCodeRepository;
 import team.sb.authorizationserver.domain.user.api.dto.request.SignupRequest;
@@ -53,18 +54,18 @@ public class UserFacade {
         }
     }
 
-    private void isValidEmail(String email, String code) {
+    public void isValidEmail(String email, String code) {
         emailAuthCodeRepository.findById(email)
                 .map(EmailAuthCode::getCode)
                 .filter(s -> s.equals(code))
-                .orElseThrow(() -> InvalidAuthCodeException.EXCEPTION);
+                .orElseThrow(() -> InvalidEmailCodeException.EXCEPTION);
     }
 
-    private void isValidPhoneNumber(String phoneNumber, String code) {
+    public void isValidPhoneNumber(String phoneNumber, String code) {
         phoneAuthCodeRepository.findById(phoneNumber)
                 .map(PhoneAuthCode::getCode)
                 .filter(s -> s.equals(code))
-                .orElseThrow();
+                .orElseThrow(() -> InvalidPhoneCodeException.EXCEPTION);
     }
 
 }
