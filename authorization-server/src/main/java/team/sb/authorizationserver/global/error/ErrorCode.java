@@ -16,7 +16,8 @@ public enum ErrorCode {
 
     INVALID_IMAGE(401, "Invalid Image"),
 
-    INVALID_AUTH_CODE(401, "Invalid Auth Code"),
+    INVALID_EMAIL_CODE(401, "Invalid Email Code"),
+    INVALID_PHONE_CODE(401, "Invalid PHONE Code"),
 
     INVALID_CLIENT_SECRET(401, "Invalid Client Secret"),
     CLIENT_NOT_FOUND(404, "Client Not Found"),
