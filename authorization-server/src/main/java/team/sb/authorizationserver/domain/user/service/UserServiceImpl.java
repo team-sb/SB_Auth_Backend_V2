@@ -51,9 +51,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public EmailDto findEmail(FindEmailRequest findEmailRequest) {
-        User user = userFacade.getByPhoneNumber(findEmailRequest.getPhoneNumber());
+        String phoneNumber = findEmailRequest.getPhoneNumber();
+        User user = userFacade.getByPhoneNumber(phoneNumber);
 
-        // code 인증 로직 추가
+        userFacade.isValidPhoneNumber(phoneNumber, findEmailRequest.getCode());
 
         return new EmailDto(user.getEmail());
     }
@@ -61,9 +62,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
-        User user = userFacade.getByEmail(changePasswordRequest.getEmail());
+        String email = changePasswordRequest.getEmail();
+        User user = userFacade.getByEmail(email);
 
-        // code 인증 로직 추가
+        userFacade.isValidEmail(email, changePasswordRequest.getCode());
 
         user.updatePassword(passwordEncoder.encode(changePasswordRequest.getPassword()));
     }
